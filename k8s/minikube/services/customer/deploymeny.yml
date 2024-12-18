@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer
+  labels:
+    app: customer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer
+  template:
+    metadata:
+      name: customer
+      labels:
+        app: customer
+    spec:
+      containers:
+        - name: customer
+          image: matayyy/customer:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
+            - name: SPRING_DATASOURCE_USERNAME
+              value: linpostgres
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: learningpassowrd
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://lin-1234-444-pgsql-primary.servers.linodedb.net:5432/customer
+      restartPolicy: Always
+
+#  kubectl apply -f minikube/services/customer
+#  kubectl get pods
+#  kubectl describe pod customer-7696c9ff88-phtxt
+#  kubectl logs customer-7696c9ff88-phtxt -f
+
+#  minikube tunnel  --for external ip addresses for load-balancers type.
+
+
+
